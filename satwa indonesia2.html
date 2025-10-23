@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selamat Datang - Satwa Liar Indonesia</title>
+  <style>
+    /* RESET */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f0f0f0;
+      overflow-x: hidden;
+    }
+
+    .hidden { display: none; }
+
+    /* ===============================
+       HALAMAN SELAMAT DATANG
+    =============================== */
+    .welcome-section {
+      position: relative;
+      height: 100vh;
+      background-image: url("https://i.pinimg.com/1200x/9b/2d/8c/9b2d8cecf9dcdc9e28801bd9da603119.jpg");
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: white;
+      text-align: center;
+    }
+
+    .welcome-section::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+
+    .welcome-content {
+      position: relative;
+      z-index: 2;
+      animation: fadeIn 2s ease;
+    }
+
+    .welcome-content h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+
+    .welcome-content p {
+      font-size: 1.2em;
+      margin-bottom: 40px;
+    }
+
+    nav {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 40px;
+      z-index: 2;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1em;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffde59;
+      transform: scale(1.1);
+    }
+
+    .welcome-btn {
+      background-color: #ffde59;
+      color: #333;
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .welcome-btn:hover {
+      background-color: #ffd633;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===============================
+       CAROUSEL + PANEL DESKRIPSI
+    =============================== */
+    .carousel-wrapper {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 1400px;
+      width: 90%;
+      background: lightgrey;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    .carousel-container {
+      display: flex;
+      gap: 15px;
+      height: 600px;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      position: relative;
+      width: 80px;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 15px;
+      transition: width 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .card:hover { width: 600px; }
+
+    .card-image {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: transform 2s ease-in-out;
+    }
+
+    .card:hover .card-image { transform: scale(1.1); }
+
+    .card-overlay {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
+      color: white;
+      pointer-events: none;
+    }
+
+    .card-content h3 {
+      margin: 0;
+      font-size: 1.5em;
+      text-transform: uppercase;
+    }
+
+    .card-content p {
+      margin: 5px 0 0;
+      font-size: 0.9em;
+      opacity: 0;
+      transition: opacity 0.5s 0.2s;
+    }
+
+    .card:hover .card-content p { opacity: 1; }
+
+    .card-number {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      width: 30px;
+      height: 30px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .info-panel {
+      width: 0;
+      opacity: 0;
+      overflow: hidden;
+      background: #f9fff9;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+      transition: all 0.6s ease;
+      position: relative;
+    }
+
+    .info-panel.active {
+      width: 400px;
+      opacity: 1;
+    }
+
+    .info-panel h2 { color: #2c5f2d; margin-bottom: 15px; }
+    .info-panel p { color: #444; line-height: 1.6em; }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background-color: green;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+    }
+
+    .info-panel.active .close-btn { display: block; }
+    .close-btn:hover { background-color: #e63946; }
+
+    /* Gambar Tiap Kartu */
+    #card-1 .card-image { background-image: url('https://i.pinimg.com/736x/bf/bc/82/bfbc828633d2187062cede405a8fd96b.jpg'); }
+    #card-2 .card-image { background-image: url('https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQTZ41f6qzLDfmZ4CSBJBiPtAvGahwbQfEO8ggMZ2bSyfkMmvg7ZOpJyuJcKovJ7nMKHOoFife5mH2y1Y9CN8z5igub1aUNoiaBMnCb6K3rUw'); }
+    #card-3 .card-image { background-image: url('https://i.pinimg.com/736x/28/45/0d/28450d98f31f4273bc7aeaa67be0db46.jpg'); }
+    #card-4 .card-image { background-image: url('https://i.pinimg.com/1200x/ed/8a/75/ed8a752dde821d160a230471c8b51812.jpg'); }
+    #card-5 .card-image { background-image: url('https://i.pinimg.com/1200x/8c/2a/f4/8c2af4c571e01627e3e37976acf005fa.jpg'); }
+    #card-6 .card-image { background-image: url('https://i.pinimg.com/736x/b8/f4/f5/b8f4f5b9e290ab24b6e8a3e335a06d19.jpg'); }
+
+    /* Tombol musik */
+    #music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #2c5f2d;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      display: none;
+    }
+
+    #music-btn:hover {
+      background: #4CAF50;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGASI -->
+  <nav class="hidden" id="navbar">
+    <a href="#" id="nav-beranda">Beranda</a>
+    <a href="#" id="nav-galeri">Galeri</a>
+    <a href="#" id="nav-tentang">Tentang</a>
+  </nav>
+
+  <!-- HALAMAN SELAMAT DATANG -->
+  <section class="welcome-section" id="welcome">
+    <div class="welcome-content">
+      <h1>Selamat Datang di Dunia Satwa Liar</h1>
+      <p>Jelajahi keindahan dan keunikan fauna langka Indonesia</p>
+      <a href="#" class="welcome-btn" id="btn-mulai">Mulai Jelajah</a>
+    </div>
+  </section>
+
+  <!-- CAROUSEL + DESKRIPSI -->
+  <div class="carousel-wrapper" id="carouselWrapper">
+    <div class="carousel-container" id="carousel">
+      <div class="card" id="card-1" onclick="showInfo(1)">
+        <div class="card-image"></div>
+        <div class="card-overlay"><div class="card-content"><h3>ORANGUTAN</h3></div></div>
+      </div>
+      <div class="card" id="card-2" onclick="showInfo(2)">
+        <div class="card-image"></div>
+        <div class="card-overlay"><div class="card-content"><h3>KOMODO</h3></div></div>
+      </div>
+      <div class="card" id="card-3" onclick="showInfo(3)">
+        <div class="card-image"></div>
+        <div class="card-overlay"><div class="card-content"><h3>HARIMAU SUMATERA</h3></div></div>
+      </div>
+      <div class="card" id="card-4" onclick="showInfo(4)">
+        <div class="card-image"></div>
+        <div class="card-overlay"><div class="card-content"><h3>CENDRAWASIH</h3></div></div>
+      </div>
+      <div class="card" id="card-5" onclick="showInfo(5)">
+        <div class="card-image"></div>
+        <div class="card-overlay"><div class="card-content"><h3>BADAK JAWA</h3></div></div>
+      </div>
+      <div class="card" id="card-6" onclick="showInfo(6)">
+        <div class="card-image"></div>
+        <div class="card-overlay"><div class="card-content"><h3>ANOA</h3></div></div>
+      </div>
+    </div>
+
+    <div class="info-panel" id="infoPanel">
+      <button class="close-btn" onclick="closeInfo()">×</button>
+      <h2>Pilih Satwa</h2>
+      <p>Klik salah satu gambar di kiri untuk melihat deskripsi 🐾</p>
+    </div>
+  </div>
+
+  <!-- Musik -->
+  <audio id="bgMusic" loop>
+    <source src="audio/main-title.mp3" type="audio/mpeg">
+  </audio>
+  <button id="music-btn">🎵</button>
+
+  <script>
+    const btnMulai = document.getElementById("btn-mulai");
+    const welcome = document.getElementById("welcome");
+    const carouselWrapper = document.getElementById("carouselWrapper");
+    const navbar = document.getElementById("navbar");
+    const bgMusic = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("music-btn");
+    let musicPlaying = false;
+
+    btnMulai.addEventListener("click", (e) => {
+      e.preventDefault();
+      welcome.style.display = "none";
+      carouselWrapper.style.display = "flex";
+      navbar.classList.remove("hidden");
+      musicBtn.style.display = "block";
+      bgMusic.play().then(() => { musicPlaying = true; }).catch(()=>{});
+    });
+
+    musicBtn.addEventListener("click", () => {
+      if (musicPlaying) {
+        bgMusic.pause();
+        musicPlaying = false;
+        musicBtn.textContent = "🔇";
+      } else {
+        bgMusic.play();
+        musicPlaying = true;
+        musicBtn.textContent = "🎵";
+      }
+    });
+
+    const infoData = {
+      1:{title:"Orangutan",desc:"Primata cerdas penghuni Kalimantan yang kini terancam punah."},
+      2:{title:"Komodo",desc:"Reptil terbesar di dunia dari Nusa Tenggara Timur, sang naga hidup!"},
+      3:{title:"Harimau Sumatera",desc:"Kucing besar terakhir di Indonesia, simbol kekuatan dan kelestarian."},
+      4:{title:"Cendrawasih",desc:"Burung surga dari Papua dengan bulu indah dan tarian menawan."},
+      5:{title:"Badak Jawa",desc:"Mamalia langka penghuni Taman Nasional Ujung Kulon."},
+      6:{title:"Anoa",desc:"Kerbau kerdil khas Sulawesi yang hidup di hutan tropis."}
+    };
+
+    const infoPanel = document.getElementById("infoPanel");
+    function showInfo(id){
+      const data=infoData[id];
+      infoPanel.classList.add("active");
+      infoPanel.innerHTML=`
+        <button class='close-btn' onclick='closeInfo()'>×</button>
+        <h2>${data.title}</h2>
+        <p>${data.desc}</p>`;
+    }
+    function closeInfo(){
+      infoPanel.classList.remove("active");
+      setTimeout(()=>{
+        infoPanel.innerHTML=`
+          <button class='close-btn' onclick='closeInfo()'>×</button>
+          <h2>Pilih Satwa</h2>
+          <p>Klik salah satu gambar di kiri untuk melihat deskripsi 🐾</p>`;
+      },400);
+    }
+  </script>
+</body>
+</html>
